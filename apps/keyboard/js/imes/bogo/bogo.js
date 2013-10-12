@@ -6,10 +6,11 @@
         var _keyboard;
 
         this.init = function ime_init(keyboard) {
+          console.log("KEYBOARD: " + keyboard);
             _keyboard = keyboard;
         };
 
-        this.init = function ime_click(keycode, x, y) {
+        this.click = function ime_click(keycode, x, y) {
             _keyboard.sendString("bogo");
         };
     }
