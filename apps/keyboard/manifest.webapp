@@ -155,6 +155,12 @@
       "description": "Greek layout",
       "types": ["url", "text"]
     },
+    "vi": {
+      "launch_path": "/index.html#vi",
+      "name": "Vietnamese",
+      "description": "Vietnamese layout",
+      "types": ["url", "text"]
+    },
     "zh-Hans-Pinyin": {
       "launch_path": "/index.html#zh-Hans-Pinyin",
       "name": "Pinyin",
