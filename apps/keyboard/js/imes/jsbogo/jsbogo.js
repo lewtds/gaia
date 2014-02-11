@@ -479,9 +479,15 @@
     }
   }
 
+  function onDeactivate() {
+    engine.clear_composition();
+    input_context.endComposition('');
+  }
+
   // Expose the engine to the Gaia keyboard
   InputMethods.jsbogo = {
     init: init,
     click: click
+    deactivate: onDeactivate
   };
 })();
