@@ -249,7 +249,7 @@
       //
       // FIXME: This is a potential slowdown. Perhaps it should be
       //        toggled by a config key.
-      if (flatten().test(/uơ.+$/)) {
+      if (flatten().match(/uơ.+$/)) {
         var vowels = find_rightmost_vowels();
         var virtual_trans = {
           rule: {
