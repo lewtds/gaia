@@ -3,7 +3,6 @@ Keyboards.vi = {
   menuLabel: 'Tiếng Việt',
   imEngine: 'jsbogo',
   types: ['text', 'url', 'email'],
-  autoCorrectLanguage: 'vi',
   keys: [
     [
       { value: 'q' }, { value: 'w' }, { value: 'e' } , { value: 'r' },
