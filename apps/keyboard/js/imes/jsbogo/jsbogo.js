@@ -78,7 +78,7 @@
     }
 
     function add_mark_to_char(chr, mark) {
-      var result = null;
+      var result;
       var tone = get_tone_from_char(chr);
       chr = add_tone_to_char(chr, Tone.NONE);
 
@@ -102,7 +102,7 @@
     }
 
     function add_tone_to_char(chr, tone) {
-      var result = null;
+      var result;
       var position = VOWELS.indexOf(chr);
 
       if (position != -1) {
@@ -116,7 +116,7 @@
     }
 
     function find_mark_target(rule) {
-      var target = null;
+      var target;
       for (var i = composition.length - 1; i > -1; i--) {
         if (composition[i].rule.key == rule.effective_on) {
           target = composition[i];
@@ -140,7 +140,7 @@
 
     function find_next_appending_trans(trans) {
       var from_index = composition.indexOf(trans);
-      var next_appending_trans = null;
+      var next_appending_trans;
 
       // FIXME: Need not-found guard.
       for (var i = from_index + 1; i < composition.length; i++) {
@@ -251,7 +251,7 @@
       //
       // FIXME: This is a potential slowdown. Perhaps it should be
       //        toggled by a config key.
-      if (flatten().test(/uơ.+$/)) {
+      if (flatten().match(/uơ.+$/)) {
         var vowels = find_rightmost_vowels();
         var virtual_trans = {
           rule: {
@@ -435,6 +435,7 @@
 
     return exports;
   }
+
 
   var input_context;
   var engine;
