@@ -67,7 +67,7 @@
 
     var TONE_CHARS = {
       '~': Tone.TILDE,
-      "'": Tone.ACUTE,
+      '\'': Tone.ACUTE,
       '?': Tone.HOOK,
       '`': Tone.GRAVE,
       '.': Tone.DOT
@@ -456,8 +456,8 @@
     engine.add_rule('_ r _?');
     engine.add_rule('_ x _~');
     engine.add_rule('_ j _.');
-    engine.add_rule("_ s _'");
-  };
+    engine.add_rule('_ s _\'');
+  }
 
   function click(keycode, x, y) {
     if (keycode == 32) {
@@ -477,13 +477,11 @@
       engine.process_char(chr);
       input_context.setComposition(engine.get_processed_string());
     }
-  };
+  }
 
   // Expose the engine to the Gaia keyboard
-  if (typeof InputMethods !== 'undefined') {
-    InputMethods.jsbogo = {
-      init: init,
-      click: click
-    };
-  }
+  InputMethods.jsbogo = {
+    init: init,
+    click: click
+  };
 })();
