@@ -468,7 +468,7 @@
 
   // Expose the engine to the Gaia keyboard
   if (typeof InputMethods !== 'undefined') {
-    InputMethods.bogo = {
+    InputMethods.jsbogo = {
       init: init,
       click: click
     };
