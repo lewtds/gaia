@@ -440,7 +440,7 @@
   var input_context;
   var engine;
 
-  function init(_input_context) {
+  function onInit(_input_context) {
     console.log('KEYBOARD: ' + _input_context);
     input_context = _input_context;
 
@@ -459,7 +459,7 @@
     engine.add_rule('_ s _\'');
   }
 
-  function click(keycode, x, y) {
+  function onClick(keycode, x, y) {
     if (keycode == KeyboardEvent.DOM_VK_SPACE ||
         keycode == KeyEvent.DOM_VK_RETURN) {
       input_context.endComposition(engine.get_processed_string());
@@ -487,8 +487,8 @@
 
   // Expose the engine to the Gaia keyboard
   InputMethods.jsbogo = {
-    init: init,
-    click: click
+    init: onInit,
+    click: onClick,
     deactivate: onDeactivate
   };
 })();
