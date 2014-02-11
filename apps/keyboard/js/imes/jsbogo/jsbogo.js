@@ -460,7 +460,8 @@
   }
 
   function click(keycode, x, y) {
-    if (keycode == 32) {
+    if (keycode == KeyboardEvent.DOM_VK_SPACE ||
+        keycode == KeyEvent.DOM_VK_RETURN) {
       input_context.endComposition(engine.get_processed_string());
       engine.clear_composition();
       input_context.sendKey(keycode);
