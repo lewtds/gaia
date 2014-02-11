@@ -4,7 +4,7 @@
 
 'use strict';
 
-(function () {
+(function() {
 
   /* BoGo Engine. https://github.com/lewtds/bogo.js
    *
@@ -13,7 +13,7 @@
    * This Source Code Form is subject to the terms of the Mozilla Public
    * License, v. 2.0. If a copy of the MPL was not distributed with this
    * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-  function BoGo () {
+  function BoGo() {
     var EffectType = {
       APPENDING: 0,
       MARK: 1,
@@ -37,26 +37,26 @@
       DOT: 5
     };
 
-    var VOWELS = "aàáảãạăằắẳẵặâầấẩẫậeèéẻẽẹêềếểễệiìíỉĩị" +
-           "oòóỏõọôồốổỗộơờớởỡợuùúủũụưừứửữựyỳýỷỹỵ";
+    var VOWELS = 'aàáảãạăằắẳẵặâầấẩẫậeèéẻẽẹêềếểễệiìíỉĩị' +
+                 'oòóỏõọôồốổỗộơờớởỡợuùúủũụưừứửữựyỳýỷỹỵ';
 
     var composition = [];
-    var rules       = [];
+    var rules = [];
 
     var MARKS_MAP = {
-      'a': "aâă__",
-      'â': "aâă__",
-      'ă': "aâă__",
-      'e': "eê___",
-      'ê': "eê___",
-      'o': "oô_ơ_",
-      'ô': "oô_ơ_",
-      'ơ': "oô_ơ_",
-      'u': "u__ư_",
-      'ư': "u__ư_",
-      'd': "d___đ",
-      'đ': "d___đ"
-    }
+      'a': 'aâă__',
+      'â': 'aâă__',
+      'ă': 'aâă__',
+      'e': 'eê___',
+      'ê': 'eê___',
+      'o': 'oô_ơ_',
+      'ô': 'oô_ơ_',
+      'ơ': 'oô_ơ_',
+      'u': 'u__ư_',
+      'ư': 'u__ư_',
+      'd': 'd___đ',
+      'đ': 'd___đ'
+    };
 
     var MARK_CHARS = {
       '^': Mark.HAT,
@@ -127,7 +127,7 @@
 
     function find_rightmost_vowels() {
       var vowels = [];
-      for (var i = composition.length - 1; i > -1 ; i--) {
+      for (var i = composition.length - 1; i >= 0; i--) {
         var trans = composition[i];
 
         if (trans.rule.type == EffectType.APPENDING &&
@@ -190,7 +190,7 @@
           trans.target = new_target;
           break;
         }
-      };
+      }
     }
 
     function process_char(chr) {
@@ -198,7 +198,7 @@
       chr = chr.toLowerCase();
 
       var applicable_rules = [];
-      rules.forEach(function (rule) {
+      rules.forEach(function(rule) {
         if (rule.key == chr) {
           applicable_rules.push(rule);
         }
@@ -229,8 +229,8 @@
           // uw in the rule list.
           if (chr == 'w') {
             var target_index = composition.indexOf(target);
-            var prev_trans   = composition[target_index - 1];
-            if (target.rule.key     == 'a' &&
+            var prev_trans = composition[target_index - 1];
+            if (target.rule.key == 'a' &&
               prev_trans.rule.key == 'u') {
               continue;
             }
@@ -249,7 +249,7 @@
       //
       // FIXME: This is a potential slowdown. Perhaps it should be
       //        toggled by a config key.
-      if (flatten().match(/uơ.+$/)) {
+      if (flatten().test(/uơ.+$/)) {
         var vowels = find_rightmost_vowels();
         var virtual_trans = {
           rule: {
@@ -278,15 +278,15 @@
     function flatten() {
       var canvas = [];
 
-      composition.forEach(function (trans, index) {
+      composition.forEach(function(trans, index) {
 
         function apply_effect(func, trans) {
           var index = trans.target.dest;
           var char_with_effect = func(canvas[index], trans.rule.effect);
 
           // Double typing an effect key undoes it. Btw, we're playing
-          // fast-and-loose here by relying on the fact that Tone.NONE equals
-          // Mark.None and equals 0.
+          // fast-and-loose here by relying on the fact that Tone.NONE
+          // equals Mark.None and equals 0.
           if (char_with_effect == canvas[index]) {
             canvas[index] = func(canvas[index], Tone.NONE);
           } else {
@@ -310,7 +310,7 @@
         }
       });
 
-      composition.forEach(function (trans) {
+      composition.forEach(function(trans) {
         if (trans.rule.type == EffectType.APPENDING) {
           if (trans.isUpperCase) {
             canvas[trans.dest] = canvas[trans.dest].toUpperCase();
@@ -324,13 +324,20 @@
     function process_string(string) {
       for (var i = 0; i < string.length; i++) {
         process_char(string[i]);
-      };
+      }
     }
 
-    // parse_rule('a a a^') -> {type: EffectType.MARK, effect: HAT, key: a, effective_on: a}
-    // parse_rule('a w a(') -> {type: EffectType.MARK, effect: BREVE, key: w, effective_on: a}
-    // parse_rule('a f a`') -> {type: EffectType.MARK, effect: HAT, key: a, effective_on: a}
-    // parse_rule('w u+') -> {type: EffectType.APPEND, effect: ư, key: w}
+    // js > parse_rule('a a a^')
+    // {type: EffectType.MARK, effect: HAT, key: a, effective_on: a}
+    //
+    // js > parse_rule('a w a(')
+    // {type: EffectType.MARK, effect: BREVE, key: w, effective_on: a}
+    //
+    // js > parse_rule('a f a`')
+    // {type: EffectType.MARK, effect: HAT, key: a, effective_on: a}
+    //
+    // js > parse_rule('w u+')
+    // {type: EffectType.APPEND, effect: ư, key: w}
     function parse_rule(string) {
       var tokens = string.trim().replace(/\s\s+/, ' ').split(' ');
 
@@ -369,7 +376,7 @@
           indexes_to_remove.push(i);
           break;
         }
-      };
+      }
 
       for (var i = indexes_to_remove[0] + 1; i < composition.length; i++) {
         var trans = composition[i];
@@ -377,18 +384,18 @@
           trans.target === last_appending_trans) {
           indexes_to_remove.push(i);
         }
-      };
+      }
 
       // Then remove them
       indexes_to_remove.sort().reverse();
-      indexes_to_remove.forEach(function (index) {
+      indexes_to_remove.forEach(function(index) {
         composition.splice(index, 1);
       });
     }
 
     function get_raw_input_string() {
       var raw_input_keys = [];
-      composition.forEach(function (trans) {
+      composition.forEach(function(trans) {
         raw_input_keys.push(trans.rule.key);
       });
       return raw_input_keys.join('');
@@ -407,42 +414,41 @@
     }
 
     var exports = {
-      add_rule:  function(rule_string) {
+      add_rule: function(rule_string) {
         rules.push(parse_rule(rule_string));
       },
-      clear_rules:          clear_rules,
-      process_char:         process_char,
-      process_string:       process_string,
-      process_backspace:    process_backspace,
-      clear_composition:    clear_composition,
+      clear_rules: clear_rules,
+      process_char: process_char,
+      process_string: process_string,
+      process_backspace: process_backspace,
+      clear_composition: clear_composition,
       get_processed_string: flatten,
       get_raw_input_string: get_raw_input_string,
-      has_composition:      has_composition
+      has_composition: has_composition
     };
 
     return exports;
-  };
-
+  }
 
   var input_context;
   var engine;
 
   function init(_input_context) {
-    console.log("KEYBOARD: " + _input_context);
+    console.log('KEYBOARD: ' + _input_context);
     input_context = _input_context;
 
     engine = new BoGo();
-    engine.add_rule("o w o+");
-    engine.add_rule("u w u+");
-    engine.add_rule("a a a^");
-    engine.add_rule("a w a(");
-    engine.add_rule("e e e^");
-    engine.add_rule("o o o^");
-    engine.add_rule("d d d-");
-    engine.add_rule("_ f _`");
-    engine.add_rule("_ r _?");
-    engine.add_rule("_ x _~");
-    engine.add_rule("_ j _.");
+    engine.add_rule('o w o+');
+    engine.add_rule('u w u+');
+    engine.add_rule('a a a^');
+    engine.add_rule('a w a(');
+    engine.add_rule('e e e^');
+    engine.add_rule('o o o^');
+    engine.add_rule('d d d-');
+    engine.add_rule('_ f _`');
+    engine.add_rule('_ r _?');
+    engine.add_rule('_ x _~');
+    engine.add_rule('_ j _.');
     engine.add_rule("_ s _'");
   };
 
