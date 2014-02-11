@@ -154,13 +154,13 @@
 
     function find_tone_target(rule) {
       var vowels = find_rightmost_vowels();
-      var target = null;
+      var target;
 
       if (vowels.length == 1) {
         // cá
         target = vowels[0];
       } else if (vowels.length == 2) {
-        if (find_next_appending_trans(vowels[1]) != null ||
+        if (find_next_appending_trans(vowels[1]) !== undefined ||
           flatten(vowels) == 'uo') {
           // nước, thuở
           target = vowels[1];
@@ -216,13 +216,15 @@
 
       for (var i = 0; i < applicable_rules.length; i++) {
         var rule = applicable_rules[i];
+        var target;
+
         if (rule.type == EffectType.MARK) {
-          var target = find_mark_target(rule);
+          target = find_mark_target(rule);
         } else if (rule.type == EffectType.TONE) {
-          var target = find_tone_target(rule);
+          target = find_tone_target(rule);
         }
 
-        if (target != undefined) {
+        if (target !== undefined) {
           // Fix uaw being wrongly processed to muă by skipping
           // the aw rule. Then the uw rule will be matched later.
           // Note that this requires the aw rule be placed before
@@ -343,14 +345,16 @@
 
       var effective_on = tokens[0];
       var key = tokens[1];
+      var type;
+      var effect;
 
       var effect_char = tokens[2][1];
       if (effect_char in MARK_CHARS) {
-        var type = EffectType.MARK;
-        var effect = MARK_CHARS[effect_char];
+        type = EffectType.MARK;
+        effect = MARK_CHARS[effect_char];
       } else if (effect_char in TONE_CHARS) {
-        var type = EffectType.TONE;
-        var effect = TONE_CHARS[effect_char];
+        type = EffectType.TONE;
+        effect = TONE_CHARS[effect_char];
       }
 
       var trans = {
@@ -366,11 +370,13 @@
     function process_backspace() {
       var indexes_to_remove = [];
       var last_appending_trans;
+      var i;
+      var trans;
 
       // Find the last APPENDING transformation and all
       // the transformations that add effects to it.
-      for (var i = composition.length - 1; i >= 0; i--) {
-        var trans = composition[i];
+      for (i = composition.length - 1; i >= 0; i--) {
+        trans = composition[i];
         if (trans.rule.type == EffectType.APPENDING) {
           last_appending_trans = trans;
           indexes_to_remove.push(i);
@@ -378,8 +384,8 @@
         }
       }
 
-      for (var i = indexes_to_remove[0] + 1; i < composition.length; i++) {
-        var trans = composition[i];
+      for (i = indexes_to_remove[0] + 1; i < composition.length; i++) {
+        trans = composition[i];
         if (trans.hasOwnProperty('target') &&
           trans.target === last_appending_trans) {
           indexes_to_remove.push(i);
